@@ -65,7 +65,7 @@ class TestCpuUsageReporter(unittest.TestCase):
 
         reporter.print_report(123, 4)
 
-        printer.assert_called_with("123\t1000\t1\t?\t1.24\t0.0\t3.67\t1\tprocess_1")
+        printer.assert_called_with("123\t1000\t1\tNone\t1.24\t0.0\t3.67\t1\tprocess_1")
 
     def test_print_report_with_guest_percent_none(self):
         cpu_usage = Mock()
@@ -77,7 +77,7 @@ class TestCpuUsageReporter(unittest.TestCase):
 
         reporter.print_report(123, 4)
 
-        printer.assert_called_with("123\t1000\t1\t2.43\t1.24\t?\t3.67\t1\tprocess_1")
+        printer.assert_called_with("123\t1000\t1\t2.43\t1.24\tNone\t3.67\t1\tprocess_1")
 
     def test_print_report_with_system_percent_none(self):
         cpu_usage = Mock()
@@ -89,7 +89,7 @@ class TestCpuUsageReporter(unittest.TestCase):
 
         reporter.print_report(123, 4)
 
-        printer.assert_called_with("123\t1000\t1\t2.43\t?\t0.0\t3.67\t1\tprocess_1")
+        printer.assert_called_with("123\t1000\t1\t2.43\tNone\t0.0\t3.67\t1\tprocess_1")
 
     def test_print_report_with_total_percent_none(self):
         cpu_usage = Mock()
@@ -101,7 +101,7 @@ class TestCpuUsageReporter(unittest.TestCase):
 
         reporter.print_report(123, 4)
 
-        printer.assert_called_with("123\t1000\t1\t2.43\t1.24\t0.0\t?\t1\tprocess_1")
+        printer.assert_called_with("123\t1000\t1\t2.43\t1.24\t0.0\tNone\t1\tprocess_1")
 
 if __name__ == "__main__":
     unittest.main()

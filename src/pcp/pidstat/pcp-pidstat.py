@@ -1,3 +1,19 @@
+#!/usr/bin/env pmpython
+#
+# Copyright (C) 2014-2016 Sitaram Shelke.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# pylint: disable=C0103,R0914,R0902
+
 import sys
 import re
 import os
@@ -88,22 +104,28 @@ class ProcessCpuUsage:
         self.__metric_repository = metrics_repository
 
     def user_percent(self):
-        if self.__metric_repository.previous_value('proc.psinfo.utime', self.instance) is not None:
-            percent_of_time =  100 * float(self.__metric_repository.current_value('proc.psinfo.utime', self.instance) - self.__metric_repository.previous_value('proc.psinfo.utime', self.instance)) / float(1000 * self.__delta_time)
+        c_usertime = self.__metric_repository.current_value('proc.psinfo.utime', self.instance)
+        p_usertime = self.__metric_repository.previous_value('proc.psinfo.utime', self.instance)
+        if  c_usertime is not None and p_usertime is not None:
+            percent_of_time =  100 * float(c_usertime - p_usertime) / float(1000 * self.__delta_time)
             return float("%.2f"%percent_of_time)
         else:
              return None
 
     def guest_percent(self):
-        if self.__metric_repository.previous_value('proc.psinfo.guest_time', self.instance) is not None:
-            percent_of_time =  100 * float(self.__metric_repository.current_value('proc.psinfo.guest_time', self.instance) - self.__metric_repository.previous_value('proc.psinfo.guest_time', self.instance)) / float(1000 * self.__delta_time)
+        c_guesttime = self.__metric_repository.current_value('proc.psinfo.guest_time', self.instance)
+        p_guesttime = self.__metric_repository.previous_value('proc.psinfo.guest_time', self.instance)
+        if  c_guesttime is not None and p_guesttime is not None:
+            percent_of_time =  100 * float(c_guesttime - p_guesttime) / float(1000 * self.__delta_time)
             return float("%.2f"%percent_of_time)
         else:
             return None
 
     def system_percent(self):
-        if self.__metric_repository.previous_value('proc.psinfo.stime', self.instance) is not None:
-            percent_of_time =  100 * float(self.__metric_repository.current_value('proc.psinfo.stime', self.instance) - self.__metric_repository.previous_value('proc.psinfo.stime', self.instance)) / float(1000 * self.__delta_time)
+        c_systemtime = self.__metric_repository.current_value('proc.psinfo.stime', self.instance)
+        p_systemtime = self.__metric_repository.previous_value('proc.psinfo.stime', self.instance)
+        if  c_systemtime is not None and p_systemtime is not None:
+            percent_of_time =  100 * float(c_systemtime - p_systemtime) / float(1000 * self.__delta_time)
             return float("%.2f"%percent_of_time)
         else:
             return None
@@ -196,7 +218,7 @@ class ProcessMemoryUtil:
     def minflt(self):
         c_min_flt = self.__metric_repository.current_value('proc.psinfo.minflt', self.instance)
         p_min_flt = self.__metric_repository.previous_value('proc.psinfo.minflt', self.instance)
-        if p_min_flt is not None:
+        if c_min_flt is not None and p_min_flt is not None:
             return float("%.2f" % ((c_min_flt - p_min_flt)/self.delta_time))
         else:
             return None
@@ -204,7 +226,7 @@ class ProcessMemoryUtil:
     def majflt(self):
         c_maj_flt = self.__metric_repository.current_value('proc.psinfo.maj_flt', self.instance)
         p_maj_flt = self.__metric_repository.previous_value('proc.psinfo.maj_flt', self.instance)
-        if p_maj_flt is not None:
+        if c_maj_flt is not None and p_maj_flt is not None:
             return float("%.2f" % ((c_maj_flt - p_maj_flt)/self.delta_time))
         else:
             return None
@@ -218,7 +240,10 @@ class ProcessMemoryUtil:
     def mem(self):
         total_mem = self.__metric_repository.current_value('mem.physmem', None)
         rss = self.__metric_repository.current_value('proc.psinfo.rss', self.instance)
-        return float("%.2f" % (100*float(rss)/total_mem))
+        if total_mem is not None and rss is not None:
+            return float("%.2f" % (100*float(rss)/total_mem))
+        else:
+            return None
 
     def user_name(self):
         return self.__metric_repository.current_value('proc.id.uid_nm', self.instance)
@@ -329,14 +354,6 @@ class CpuUsageReporter:
             guest_percent = process.guest_percent()
             system_percent = process.system_percent()
             total_percent = process.total_percent()
-            if user_percent is None:
-                user_percent = "?"
-            if guest_percent is None:
-                guest_percent = "?"
-            if system_percent is None:
-                system_percent = "?"
-            if total_percent is None:
-                total_percent = "?"
 
             if self.pidstat_options.per_processor_usage:
                 total_percent = float("%.2f"%(total_percent/ncpu))
@@ -376,10 +393,6 @@ class CpuProcessMemoryUtilReporter:
         for process in processes:
             maj_flt = process.majflt()
             min_flt = process.minflt()
-            if maj_flt is None:
-                maj_flt = "?"
-            if min_flt is None:
-                min_flt = "?"
             if self.pidstat_options.show_process_user:
                 self.printer("%s\t%s\t%s\t%s\t\t%s\t\t%s\t%s\t%s\t%s" % (timestamp,process.user_name(),process.pid(),min_flt,maj_flt,process.vsize(),process.rss(),process.mem(),process.process_name()))
             else:
@@ -400,6 +413,15 @@ class CpuProcessStackUtilReporter:
                 self.printer("%s\t%s\t%s\t%s\t%s" % (timestamp,process.user_name(),process.pid(),process.stack_size(),process.process_name()))
             else:
                 self.printer("%s\t%s\t%s\t%s\t%s" % (timestamp,process.user_id(),process.pid(),process.stack_size(),process.process_name()))
+
+class NoneHandlingPrinterDecorator:
+    def __init__(self, printer):
+        self.printer = printer
+
+    def Print(self, *args):
+        new_args = args[0].replace('None','?')
+        self.printer.Print(new_args)
+
 
 class PidstatOptions(pmapi.pmOptions):
     process_name = None
@@ -504,28 +526,32 @@ class PidstatReport(pmcc.MetricGroupPrinter):
             process_stack_util = CpuProcessStackUtil(metric_repository)
             process_filter = ProcessFilter(PidstatOptions)
             stdout = StdoutPrinter()
-            report = CpuProcessStackUtilReporter(process_stack_util, process_filter, stdout.Print, PidstatOptions)
+            printdecorator = NoneHandlingPrinterDecorator(stdout)
+            report = CpuProcessStackUtilReporter(process_stack_util, process_filter, printdecorator.Print, PidstatOptions)
 
             report.print_report(timestamp[3])
         elif(PidstatOptions.show_process_memory_util):
             process_memory_util = CpuProcessMemoryUtil(metric_repository)
             process_filter = ProcessFilter(PidstatOptions)
             stdout = StdoutPrinter()
-            report = CpuProcessMemoryUtilReporter(process_memory_util, process_filter, interval_in_seconds, stdout.Print, PidstatOptions)
+            printdecorator = NoneHandlingPrinterDecorator(stdout)
+            report = CpuProcessMemoryUtilReporter(process_memory_util, process_filter, interval_in_seconds, printdecorator.Print, PidstatOptions)
 
             report.print_report(timestamp[3])
         elif(PidstatOptions.show_process_priority):
             process_priority = CpuProcessPriorities(metric_repository)
             process_filter = ProcessFilter(PidstatOptions)
             stdout = StdoutPrinter()
-            report = CpuProcessPrioritiesReporter(process_priority, process_filter, stdout.Print, PidstatOptions)
+            printdecorator = NoneHandlingPrinterDecorator(stdout)
+            report = CpuProcessPrioritiesReporter(process_priority, process_filter, printdecorator.Print, PidstatOptions)
 
             report.print_report(timestamp[3])
         else:
             cpu_usage = CpuUsage(metric_repository)
             process_filter = ProcessFilter(PidstatOptions)
             stdout = StdoutPrinter()
-            report = CpuUsageReporter(cpu_usage, process_filter, interval_in_seconds, stdout.Print, PidstatOptions)
+            printdecorator = NoneHandlingPrinterDecorator(stdout)
+            report = CpuUsageReporter(cpu_usage, process_filter, interval_in_seconds, printdecorator.Print, PidstatOptions)
 
             report.print_report(timestamp[3],ncpu)
 

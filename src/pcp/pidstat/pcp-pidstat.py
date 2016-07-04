@@ -355,7 +355,7 @@ class CpuUsageReporter:
             system_percent = process.system_percent()
             total_percent = process.total_percent()
 
-            if self.pidstat_options.per_processor_usage:
+            if self.pidstat_options.per_processor_usage and total_percent is not None:
                 total_percent = float("%.2f"%(total_percent/ncpu))
 
             if self.pidstat_options.show_process_user:

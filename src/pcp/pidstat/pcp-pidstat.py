@@ -160,7 +160,7 @@ class CpuUsage:
 
     def __pids(self):
         pid_dict = self.__metric_repository.current_values('proc.psinfo.pid')
-        return pid_dict.values()
+        return sorted(pid_dict.values())
 
 
 class ProcessPriority:
@@ -198,7 +198,7 @@ class CpuProcessPriorities:
 
     def __pids(self):
         pid_dict = self.__metric_repository.current_values('proc.psinfo.pid')
-        return pid_dict.values()
+        return sorted(pid_dict.values())
 
 class ProcessMemoryUtil:
     def __init__(self, instance, delta_time,  metric_repository):
@@ -257,7 +257,7 @@ class CpuProcessMemoryUtil:
 
     def __pids(self):
         pid_dict = self.__metric_repository.current_values('proc.psinfo.pid')
-        return pid_dict.values()
+        return sorted(pid_dict.values())
 
 class ProcessStackUtil:
     def __init__(self, instance, metric_repository):
@@ -289,7 +289,7 @@ class CpuProcessStackUtil:
 
     def __pids(self):
         pid_dict = self.__metric_repository.current_values('proc.psinfo.pid')
-        return pid_dict.values()
+        return sorted(pid_dict.values())
 
 class ProcessFilter:
     def __init__(self,options):

@@ -27,6 +27,14 @@ class TestProcessMemoryUtil(unittest.TestCase):
             return 1
         if metric_name == 'proc.psinfo.pid' and instance == 1:
             return 1
+        if metric_name == 'proc.psinfo.vsize' and instance == 2:
+            return 120084
+        if metric_name == 'proc.psinfo.rss' and instance == 2:
+            return 6272
+        if metric_name == 'proc.psinfo.minflt' and instance == 2:
+            return 14509
+        if metric_name == 'proc.psinfo.maj_flt' and instance == 2:
+            return 54
         return None
 
     def metric_repo_previous_value_side_effect(self, metric_name,instance):
@@ -37,6 +45,14 @@ class TestProcessMemoryUtil(unittest.TestCase):
         if metric_name == 'proc.psinfo.cmaj_flt' and instance == 1:
             return 645
         if metric_name == 'proc.psinfo.maj_flt' and instance == 1:
+            return 50
+        if metric_name == 'proc.psinfo.cmin_flt' and instance == 3:
+            return 573930
+        if metric_name == 'proc.psinfo.minflt' and instance == 3:
+            return 14500
+        if metric_name == 'proc.psinfo.cmaj_flt' and instance == 3:
+            return 645
+        if metric_name == 'proc.psinfo.maj_flt' and instance == 3:
             return 50
         return None
 
@@ -68,6 +84,13 @@ class TestProcessMemoryUtil(unittest.TestCase):
 
         self.assertEquals(min_flt, 6.72)
 
+    def test_min_flt_if_current_value_is_None(self):
+        process_memory_usage = ProcessMemoryUtil(3,1.34,self.__metric_repository)
+
+        min_flt = process_memory_usage.minflt()
+
+        self.assertIsNone(min_flt)
+
     def test_min_flt_if_previous_value_is_None(self):
         process_memory_usage = ProcessMemoryUtil(2,1.34,self.__metric_repository)
 
@@ -81,6 +104,14 @@ class TestProcessMemoryUtil(unittest.TestCase):
         maj_flt = process_memory_usage.majflt()
 
         self.assertEquals(maj_flt, 2.99)
+
+    def test_maj_flt_if_current_value_is_None(self):
+        process_memory_usage = ProcessMemoryUtil(3,1.34,self.__metric_repository)
+
+        maj_flt = process_memory_usage.majflt()
+
+        self.assertIsNone(maj_flt)
+
 
     def test_maj_flt_if_previous_value_is_None(self):
         process_memory_usage = ProcessMemoryUtil(2,1.34,self.__metric_repository)

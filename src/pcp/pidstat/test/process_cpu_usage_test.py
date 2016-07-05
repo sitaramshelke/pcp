@@ -169,26 +169,12 @@ class TestProcessCpuUsage(unittest.TestCase):
 
         self.assertEqual(pid,1)
 
-    def test_pid_if_current_value_is_None(self):
-        process_cpu_usage = ProcessCpuUsage(3,1.34,self.__metric_repository)
-
-        pid = process_cpu_usage.pid()
-
-        self.assertIsNone(pid)
-
     def test_process_name(self):
         process_cpu_usage = ProcessCpuUsage(1,1.34,self.__metric_repository)
 
         name = process_cpu_usage.process_name()
 
         self.assertEqual(name,'test')
-
-    def test_process_name_if_current_value_is_None(self):
-        process_cpu_usage = ProcessCpuUsage(3,1.34,self.__metric_repository)
-
-        name = process_cpu_usage.process_name()
-
-        self.assertIsNone(name)
 
     def test_cpu_number(self):
         process_cpu_usage = ProcessCpuUsage(1,1.34,self.__metric_repository)
@@ -197,26 +183,12 @@ class TestProcessCpuUsage(unittest.TestCase):
 
         self.assertEqual(number,0)
 
-    def test_cpu_number_if_current_value_is_None(self):
-        process_cpu_usage = ProcessCpuUsage(3,1.34,self.__metric_repository)
-
-        number = process_cpu_usage.cpu_number()
-
-        self.assertIsNone(number)
-
     def test_user_id(self):
         process_cpu_usage = ProcessCpuUsage(1,1.34,self.__metric_repository)
 
         user_id = process_cpu_usage.user_id()
 
         self.assertEqual(user_id,1)
-
-    def test_user_id_if_current_value_is_None(self):
-        process_cpu_usage = ProcessCpuUsage(3,1.34,self.__metric_repository)
-
-        user_id = process_cpu_usage.user_id()
-
-        self.assertIsNone(user_id)
 
     def test_user_name(self):
         process_cpu_usage = ProcessCpuUsage(1,1.34,self.__metric_repository)
@@ -225,12 +197,6 @@ class TestProcessCpuUsage(unittest.TestCase):
 
         self.assertEqual(user_name,'pcp')
 
-    def test_user_name_if_current_value_is_None(self):
-        process_cpu_usage = ProcessCpuUsage(3,1.34,self.__metric_repository)
-
-        user_name = process_cpu_usage.user_name()
-
-        self.assertIsNone(user_name)
 
 if __name__ == '__main__':
     unittest.main()

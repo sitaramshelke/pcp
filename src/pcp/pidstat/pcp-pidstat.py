@@ -418,8 +418,8 @@ class NoneHandlingPrinterDecorator:
     def __init__(self, printer):
         self.printer = printer
 
-    def Print(self, *args):
-        new_args = args[0].replace('None','?')
+    def Print(self, args):
+        new_args = args.replace('None','?')
         self.printer.Print(new_args)
 
 

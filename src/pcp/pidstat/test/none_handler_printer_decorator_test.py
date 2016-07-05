@@ -2,23 +2,7 @@ import unittest
 from mock import Mock
 from pcp_pidstat import NoneHandlingPrinterDecorator
 class TestNoneHandlingPrinterDecorator(unittest.TestCase):
-    def setUp(self):
-        self.options = Mock(
-                        per_processor_usage = False,
-                        show_process_user = None)
-
-        process_1 = Mock(pid = Mock(return_value = 1),
-                        process_name = Mock(return_value = "process_1"),
-                        user_name = Mock(return_value='pcp'),
-                        user_id = Mock(return_value=1000),
-                        user_percent = Mock(return_value=2.43),
-                        system_percent = Mock(return_value=1.24),
-                        guest_percent = Mock(return_value=0.00),
-                        total_percent = Mock(return_value=3.67),
-                        cpu_number = Mock(return_value=1),)
-
-        self.processes = [process_1]
-
+    
     def test_print_report_without_none_values(self):
         printer = Mock()
         printer.Print = Mock()

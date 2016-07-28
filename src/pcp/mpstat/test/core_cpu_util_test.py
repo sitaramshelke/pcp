@@ -1,3 +1,4 @@
+#!/usr/bin/env pmpython
 from mock import Mock
 import unittest
 from pcp_mpstat import CoreCpuUtil

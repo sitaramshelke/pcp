@@ -1,3 +1,4 @@
+#!/usr/bin/env pmpython
 from pcp import pmapi
 from pcp import pmcc
 import sys

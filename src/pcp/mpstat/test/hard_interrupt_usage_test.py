@@ -1,3 +1,4 @@
+#!/usr/bin/env pmpython
 import unittest
 from mock import Mock
 from pcp_mpstat import HardInterruptUsage

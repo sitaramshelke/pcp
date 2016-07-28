@@ -1,3 +1,4 @@
+#!/usr/bin/env pmpython
 import unittest
 from mock import Mock
 from pcp_mpstat import InterruptUsage
@@ -46,7 +47,7 @@ class TestInterruptUsage(unittest.TestCase):
         value = interrupt_usage.value()
 
         self.assertEqual(value, 1.49)
-        
+
     def test_value_if_current_value_is_none(self):
         interrupt_usage = InterruptUsage(1.34, self.metric_repository, 'kernel.percpu.interrupts.line12', 1)
 

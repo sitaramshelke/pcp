@@ -1,3 +1,4 @@
+#!/usr/bin/env pmpython
 import unittest
 from mock import Mock
 from mock import call

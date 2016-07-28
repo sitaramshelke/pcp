@@ -8,6 +8,8 @@ class TestCoreCpuUtil(unittest.TestCase):
         self.__metric_repository.previous_value = Mock(side_effect=self.metric_repo_previous_value_side_effect)
 
     def metric_repo_current_value_side_effect(self, metric_name,instance):
+        if metric_name == 'hinv.ncpu':
+            return 2
         if metric_name == 'hinv.cpu.online':
             return 2
         if metric_name == 'kernel.all.cpu.user' and instance is None:
@@ -190,63 +192,63 @@ class TestCoreCpuUtil(unittest.TestCase):
 
         user_time  = cpu_util.user_time()
 
-        self.assertEqual(user_time,0.3)
+        self.assertEqual(user_time,0.15)
 
     def test_nice_time_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         nice_time  = cpu_util.nice_time()
 
-        self.assertEqual(nice_time,0.6)
+        self.assertEqual(nice_time,0.3)
 
     def test_sys_time_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         sys_time  = cpu_util.sys_time()
 
-        self.assertEqual(sys_time,0.82)
+        self.assertEqual(sys_time,0.41)
 
     def test_iowait_time_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         iowait_time  = cpu_util.iowait_time()
 
-        self.assertEqual(iowait_time,0.6)
+        self.assertEqual(iowait_time,0.3)
 
     def test_irq_hard_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         irq_hard  = cpu_util.irq_hard()
 
-        self.assertEqual(irq_hard,0.15  )
+        self.assertEqual(irq_hard,0.07)
 
     def test_irq_soft_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         irq_soft  = cpu_util.irq_soft()
 
-        self.assertEqual(irq_soft,0.15)
+        self.assertEqual(irq_soft,0.07)
 
     def test_guest_time_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         guest_time  = cpu_util.guest_time()
 
-        self.assertEqual(guest_time,0.6)
+        self.assertEqual(guest_time,0.3)
 
     def test_guest_nice_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         guest_nice  = cpu_util.guest_nice()
 
-        self.assertEqual(guest_nice,0.52)
+        self.assertEqual(guest_nice,0.26)
 
     def test_idle_time_for_all_cpus(self):
         cpu_util = CoreCpuUtil(None, 1.34, self.__metric_repository)
 
         idle_time  = cpu_util.idle_time()
 
-        self.assertEqual(idle_time,0.22)
+        self.assertEqual(idle_time,0.11)
 
     def test_user_time_if_current_value_is_none(self):
         cpu_util = CoreCpuUtil(2, 1.34, self.__metric_repository)

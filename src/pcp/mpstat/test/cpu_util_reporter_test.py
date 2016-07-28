@@ -57,7 +57,7 @@ class TestCpuUtilReporter(unittest.TestCase):
 
         report.print_report(cpu_util, timestamp)
 
-        printer.assert_called_with('2016-7-18 IST\tall\t 1.23\t  2.34\t 3.45\t    4.56\t 5.67\t  6.78\t   7.89\t    8.9\t  1.34\t  2.45')
+        printer.assert_called_with('2016-7-18 IST\tall\t1.23 \t2.34  \t3.45 \t4.56    \t5.67 \t6.78  \t7.89   \t8.9    \t1.34  \t2.45  ')
 
     def test_print_report_with_online_cpus(self):
         options = Mock()
@@ -73,10 +73,10 @@ class TestCpuUtilReporter(unittest.TestCase):
 
         report.print_report(cpu_util, timestamp)
 
-        calls = [call(' Timestamp\tCPU\t %usr\t %nice\t %sys\t %iowait\t %irq\t %soft\t %steal\t %guest\t %nice\t %idle'),
-        call('2016-7-18 IST\tall\t 1.23\t  2.34\t 3.45\t    4.56\t 5.67\t  6.78\t   7.89\t    8.9\t  1.34\t  2.45'),
-        call('2016-7-18 IST\t  1\t 1.43\t  2.35\t 2.45\t    3.76\t 6.45\t  2.58\t   2.59\t    5.6\t  2.34\t  6.67'),
-        call('2016-7-18 IST\t  2\t 2.43\t  3.35\t 5.45\t    2.76\t 7.45\t  3.58\t   6.59\t    2.6\t  7.34\t  3.67')]
+        calls = [call('\nTimestamp \tCPU\t%usr \t%nice \t%sys \t%iowait \t%irq \t%soft \t%steal \t%guest \t%nice \t%idle '),
+                call('2016-7-18 IST\tall\t1.23 \t2.34  \t3.45 \t4.56    \t5.67 \t6.78  \t7.89   \t8.9    \t1.34  \t2.45  '),
+                call('2016-7-18 IST\t1  \t1.43 \t2.35  \t2.45 \t3.76    \t6.45 \t2.58  \t2.59   \t5.6    \t2.34  \t6.67  '),
+                call('2016-7-18 IST\t2  \t2.43 \t3.35  \t5.45 \t2.76    \t7.45 \t3.58  \t6.59   \t2.6    \t7.34  \t3.67  ')]
 
         printer.assert_has_calls(calls)
 
@@ -94,10 +94,10 @@ class TestCpuUtilReporter(unittest.TestCase):
 
         report.print_report(cpu_util, timestamp)
 
-        calls = [call(' Timestamp\tCPU\t %usr\t %nice\t %sys\t %iowait\t %irq\t %soft\t %steal\t %guest\t %nice\t %idle'),
-                 call('2016-7-18 IST\tall\t 1.23\t  2.34\t 3.45\t    4.56\t 5.67\t  6.78\t   7.89\t    8.9\t  1.34\t  2.45'),
-                 call('2016-7-18 IST\t  1\t 1.43\t  2.35\t 2.45\t    3.76\t 6.45\t  2.58\t   2.59\t    5.6\t  2.34\t  6.67'),
-                 call('2016-7-18 IST\t  2\t 2.43\t  3.35\t 5.45\t    2.76\t 7.45\t  3.58\t   6.59\t    2.6\t  7.34\t  3.67')]
+        calls = [call('\nTimestamp \tCPU\t%usr \t%nice \t%sys \t%iowait \t%irq \t%soft \t%steal \t%guest \t%nice \t%idle '),
+                call('2016-7-18 IST\tall\t1.23 \t2.34  \t3.45 \t4.56    \t5.67 \t6.78  \t7.89   \t8.9    \t1.34  \t2.45  '),
+                call('2016-7-18 IST\t1  \t1.43 \t2.35  \t2.45 \t3.76    \t6.45 \t2.58  \t2.59   \t5.6    \t2.34  \t6.67  '),
+                call('2016-7-18 IST\t2  \t2.43 \t3.35  \t5.45 \t2.76    \t7.45 \t3.58  \t6.59   \t2.6    \t7.34  \t3.67  ')]
 
         printer.assert_has_calls(calls)
 
@@ -116,9 +116,9 @@ class TestCpuUtilReporter(unittest.TestCase):
         report.print_report(cpu_util, timestamp)
         report.print_report(cpu_util, timestamp)
 
-        calls = [call(' Timestamp\tCPU\t %usr\t %nice\t %sys\t %iowait\t %irq\t %soft\t %steal\t %guest\t %nice\t %idle'),
-        call('2016-7-18 IST\tall\t 1.23\t  2.34\t 3.45\t    4.56\t 5.67\t  6.78\t   7.89\t    8.9\t  1.34\t  2.45'),
-        call('2016-7-18 IST\tall\t 1.23\t  2.34\t 3.45\t    4.56\t 5.67\t  6.78\t   7.89\t    8.9\t  1.34\t  2.45')]
+        calls = [call('\nTimestamp \tCPU\t%usr \t%nice \t%sys \t%iowait \t%irq \t%soft \t%steal \t%guest \t%nice \t%idle '),
+                call('2016-7-18 IST\tall\t1.23 \t2.34  \t3.45 \t4.56    \t5.67 \t6.78  \t7.89   \t8.9    \t1.34  \t2.45  '),
+                call('2016-7-18 IST\tall\t1.23 \t2.34  \t3.45 \t4.56    \t5.67 \t6.78  \t7.89   \t8.9    \t1.34  \t2.45  ')]
 
         printer.assert_has_calls(calls)
 
@@ -137,12 +137,12 @@ class TestCpuUtilReporter(unittest.TestCase):
         report.print_report(cpu_util, timestamp)
         report.print_report(cpu_util, timestamp)
 
-        calls = [call(' Timestamp\tCPU\t %usr\t %nice\t %sys\t %iowait\t %irq\t %soft\t %steal\t %guest\t %nice\t %idle'),
-        call('2016-7-18 IST\tall\t 1.23\t  2.34\t 3.45\t    4.56\t 5.67\t  6.78\t   7.89\t    8.9\t  1.34\t  2.45'),
-        call('2016-7-18 IST\t  1\t 1.43\t  2.35\t 2.45\t    3.76\t 6.45\t  2.58\t   2.59\t    5.6\t  2.34\t  6.67'),
-        call(' Timestamp\tCPU\t %usr\t %nice\t %sys\t %iowait\t %irq\t %soft\t %steal\t %guest\t %nice\t %idle'),
-        call('2016-7-18 IST\tall\t 1.23\t  2.34\t 3.45\t    4.56\t 5.67\t  6.78\t   7.89\t    8.9\t  1.34\t  2.45'),
-        call('2016-7-18 IST\t  1\t 1.43\t  2.35\t 2.45\t    3.76\t 6.45\t  2.58\t   2.59\t    5.6\t  2.34\t  6.67')]
+        calls = [call('\nTimestamp \tCPU\t%usr \t%nice \t%sys \t%iowait \t%irq \t%soft \t%steal \t%guest \t%nice \t%idle '),
+            call('2016-7-18 IST\tall\t1.23 \t2.34  \t3.45 \t4.56    \t5.67 \t6.78  \t7.89   \t8.9    \t1.34  \t2.45  '),
+            call('2016-7-18 IST\t1  \t1.43 \t2.35  \t2.45 \t3.76    \t6.45 \t2.58  \t2.59   \t5.6    \t2.34  \t6.67  '),
+            call('\nTimestamp \tCPU\t%usr \t%nice \t%sys \t%iowait \t%irq \t%soft \t%steal \t%guest \t%nice \t%idle '),
+            call('2016-7-18 IST\tall\t1.23 \t2.34  \t3.45 \t4.56    \t5.67 \t6.78  \t7.89   \t8.9    \t1.34  \t2.45  '),
+            call('2016-7-18 IST\t1  \t1.43 \t2.35  \t2.45 \t3.76    \t6.45 \t2.58  \t2.59   \t5.6    \t2.34  \t6.67  ')]
 
         printer.assert_has_calls(calls)
 

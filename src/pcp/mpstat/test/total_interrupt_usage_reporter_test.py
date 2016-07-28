@@ -18,7 +18,7 @@ class TestTotalInterruptUsageReporter(unittest.TestCase):
 
         report.print_report(total_interrupt_usage, timestamp)
 
-        printer.assert_called_with('2016-19-07 IST\t  all\t 1.23')
+        printer.assert_called_with('2016-19-07 IST\tall  \t1.23 ')
 
     def test_print_report_with_filtered_cpus(self):
         timestamp = "2016-19-07 IST"
@@ -37,9 +37,9 @@ class TestTotalInterruptUsageReporter(unittest.TestCase):
 
         report.print_report(total_interrupt_usage, timestamp)
 
-        calls = [call(' Timestamp\t  CPU\tintr/s'),
-        call('2016-19-07 IST\t  all\t 1.23'),
-        call('2016-19-07 IST\t    0\t  2.4')]
+        calls = [call('\nTimestamp\tCPU  \tintr/s'),
+                call('2016-19-07 IST\tall  \t1.23 '),
+                call('2016-19-07 IST\t0    \t2.4  ')]
 
         printer.assert_has_calls(calls)
 

@@ -39,6 +39,7 @@ log mandatory on 1 sec {
 	kernel.percpu.cpu.guest_nice
 	kernel.percpu.cpu.idle
 	kernel.all.intr
+	kernel.percpu.cpu.intr
 	kernel.percpu.interrupts.line0
 	kernel.percpu.interrupts.line1
 	kernel.percpu.interrupts.line8

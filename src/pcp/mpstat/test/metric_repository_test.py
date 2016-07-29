@@ -1,7 +1,12 @@
 #!/usr/bin/env pmpython
+import sys
 import unittest
-from mock import Mock,MagicMock
-import mock
+if sys.version_info[0] < 3:
+    from mock import Mock
+    import mock
+else:
+    from unittest.mock import Mock
+    import unittest.mock as mock
 from pcp_mpstat import MetricRepository
 
 class MetricRepositoryTest(unittest.TestCase):
@@ -16,7 +21,7 @@ class MetricRepositoryTest(unittest.TestCase):
 
         c_utime = m_repo.current_value('kernel.percpu.cpu.user',111)
 
-        self.assertEquals(c_utime,12345)
+        self.assertEqual(c_utime,12345)
 
     def test_returns_the_current_value_for_a_metric_that_has_no_instances(self):
         utime_mock = Mock(
@@ -28,7 +33,7 @@ class MetricRepositoryTest(unittest.TestCase):
 
         c_utime = m_repo.current_value('kernel.all.cpu.user',None)
 
-        self.assertEquals(c_utime,12345)
+        self.assertEqual(c_utime,12345)
 
     def test_returns_none_if_a_metric_does_not_exist_for_an_instance(self):
         utime_mock = Mock(
@@ -64,7 +69,7 @@ class MetricRepositoryTest(unittest.TestCase):
 
         c_utime = m_repo.previous_value('kernel.percpu.cpu.user',111)
 
-        self.assertEquals(c_utime,12354)
+        self.assertEqual(c_utime,12354)
 
     def test_returns_the_previous_value_for_a_metric_that_has_no_instances(self):
         utime_mock = Mock(
@@ -76,7 +81,7 @@ class MetricRepositoryTest(unittest.TestCase):
 
         c_utime = m_repo.previous_value('kernel.all.cpu.user',None)
 
-        self.assertEquals(c_utime,12354)
+        self.assertEqual(c_utime,12354)
 
     def test_returns_none_if_a_metric_for_previous_value_does_not_exist_for_an_instance(self):
         utime_mock = Mock(
@@ -114,7 +119,7 @@ class MetricRepositoryTest(unittest.TestCase):
             c_ptime = m_repo.current_value('kernel.percpu.cpu.user',111)
             fetch_call_count = method.call_count
 
-        self.assertEquals(fetch_call_count,1)
+        self.assertEqual(fetch_call_count,1)
 
     def test_checks_if_metric_values_are_not_fetched_if_already_available(self):
         proc_utime_mock = Mock(
@@ -129,7 +134,7 @@ class MetricRepositoryTest(unittest.TestCase):
             c_ptime = m_repo.current_value('kernel.percpu.cpu.user',111)
             fetch_call_count = method.call_count
 
-        self.assertEquals(fetch_call_count,0)
+        self.assertEqual(fetch_call_count,0)
 
     def test_return_none_if_netprevvalue_returns_empty_list(self):
         utime_mock = Mock(

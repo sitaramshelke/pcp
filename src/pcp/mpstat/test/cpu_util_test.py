@@ -1,9 +1,11 @@
 #!/usr/bin/env pmpython
+import sys
 import unittest
-from mock import Mock
-import  mock
+if sys.version_info[0] < 3:
+    from mock import Mock
+else:
+    from unittest.mock import Mock
 from pcp_mpstat import CpuUtil
-from pcp_mpstat import CoreCpuUtil
 
 class TestCpuUtil(unittest.TestCase):
 
@@ -12,18 +14,18 @@ class TestCpuUtil(unittest.TestCase):
             return {1: 0, 2: 1}
 
     def test_get_percpu_util(self):
-        metric_repository = mock.Mock()
+        metric_repository = Mock()
         cpu_util = CpuUtil(1.34, metric_repository)
-        metric_repository.current_values = mock.Mock(side_effect=self.current_values_side_effect)
+        metric_repository.current_values = Mock(side_effect=self.current_values_side_effect)
 
         cpu_list = cpu_util.get_percpu_util()
 
-        self.assertEquals(len(cpu_list),2)
+        self.assertEqual(len(cpu_list),2)
 
     def test_get_totalcpu_util(self):
-        metric_repository = mock.Mock()
+        metric_repository = Mock()
         cpu_util = CpuUtil(1.34, metric_repository)
-        metric_repository.current_values = mock.Mock(side_effect=self.current_values_side_effect)
+        metric_repository.current_values = Mock(side_effect=self.current_values_side_effect)
 
         cpu_util = cpu_util.get_totalcpu_util()
 

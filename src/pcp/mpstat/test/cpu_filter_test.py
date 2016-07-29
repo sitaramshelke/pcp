@@ -1,6 +1,10 @@
 #!/usr/bin/env pmpython
+import sys
 import unittest
-from mock import Mock
+if sys.version_info[0] < 3:
+    from mock import Mock
+else:
+    from unittest.mock import Mock
 from pcp_mpstat import CpuFilter
 
 class TestCpuFilter(unittest.TestCase):

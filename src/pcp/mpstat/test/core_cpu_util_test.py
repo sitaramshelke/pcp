@@ -1,6 +1,10 @@
 #!/usr/bin/env pmpython
-from mock import Mock
+import sys
 import unittest
+if sys.version_info[0] < 3:
+    from mock import Mock
+else:
+    from unittest.mock import Mock
 from pcp_mpstat import CoreCpuUtil
 class TestCoreCpuUtil(unittest.TestCase):
     def setUp(self):
